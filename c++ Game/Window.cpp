@@ -38,9 +38,9 @@ Window::~Window() {
 	//Quit SDL subsystems
 	SDL_Quit();
 }
-void Window::Render(Image& image) {
+void Window::Render(Image* image) {
 	//Apply the image
-	SDL_BlitSurface(image.GetResource(), nullptr, screenSurface, nullptr);
+	SDL_BlitSurface(image->GetResource(), nullptr, screenSurface, nullptr);
 
 
 

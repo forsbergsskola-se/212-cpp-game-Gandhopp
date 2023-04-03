@@ -15,6 +15,6 @@ public:
 
 	
 	bool WasSuccessfull(){ return success; }
-	void Render(Image& image);
+	void Render(Image* image);
 };
 
