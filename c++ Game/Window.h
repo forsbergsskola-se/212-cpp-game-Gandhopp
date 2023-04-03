@@ -9,14 +9,8 @@ class Window
 	SDL_Surface* screenSurface{};
 
 	bool success;
-
-	bool init(int width, int height);
-
 public:
-	Window(int width, int height)
-	{
-		success = init(width, height);
-	}
+	Window(int width, int height);
 	~Window();
 
 	

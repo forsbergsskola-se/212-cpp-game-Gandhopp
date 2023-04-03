@@ -40,7 +40,7 @@ Window::~Window() {
 }
 void Window::Render(Image& image) {
 	//Apply the image
-	SDL_BlitSurface(image.GetResource(), NULL, screenSurface, NULL);
+	SDL_BlitSurface(image.GetResource(), nullptr, screenSurface, nullptr);
 
 
 

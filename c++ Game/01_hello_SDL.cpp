@@ -28,7 +28,6 @@ int main(int argc, char* args[])
 		printf("Failed to load media!\n");
 		return -1;
 	}
-	window.Render(image);
 	
 
 	//Hack to get window to stay up
@@ -38,6 +37,7 @@ int main(int argc, char* args[])
 			if (e.type == SDL_QUIT)
 				quit = true;
 		}
+		window.Render(image);
 	}
 
 	return 0;
