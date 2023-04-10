@@ -2,6 +2,8 @@
 #include "Image.h"
 class Window
 {
+	
+
 	//The window we'll be rendering to
 	SDL_Window* window{};
 

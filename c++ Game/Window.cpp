@@ -5,7 +5,6 @@
 Window::Window(int width, int height) : success{}
 {
 	//Initialization flag
-
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
