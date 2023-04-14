@@ -3,7 +3,7 @@
 #include "Window.h"
 
 //The dot that will move around on the screen
-Player::Player() : mPosX{0} ,mPosY{0}, mVelX{0}, mVelY{0}{	}
+Player::Player() : mPosX{ 0 }, mPosY{ 0 }, mVelX{ 0 }, mVelY{ 0 } {}
 
 void Player::handleEvent(SDL_Event& e)
 {
@@ -34,13 +34,13 @@ void Player::handleEvent(SDL_Event& e)
     }
 }
 
-void Player::move(int width, int height)
+void Player::move(int screenWidth, int screenHeight)
 {
     //Move the dot left or right
     mPosX += mVelX;
 
     //If the dot went too far to the left or right
-    if ((mPosX < 0) || (mPosX + DOT_WIDTH > width))
+    if ((mPosX < 0) || (mPosX + DOT_WIDTH > screenWidth))
     {
         //Move back
         mPosX -= mVelX;
@@ -49,11 +49,14 @@ void Player::move(int width, int height)
     mPosY += mVelY;
 
     //If the dot went too far up or down
-    if ((mPosY < 0) || (mPosY + DOT_HEIGHT > height))
+    if ((mPosY < 0) || (mPosY + DOT_HEIGHT > screenHeight))
     {
         //Move back
         mPosY -= mVelY;
     }
+    playerTexture->x = mPosX;
+    playerTexture->y = mPosY;
+
 }
 
 void Player::render()

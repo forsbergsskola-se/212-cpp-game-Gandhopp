@@ -1,8 +1,9 @@
 #include "Window.h"
 #include <cstdio>
 #include <SDL.h>
+#include "IImageLoader.h"
 
-Window::Window(int width, int height) : success{}
+Window::Window(int width, int height, IImageLoader* imageLoader) : success{}, imageLoader{ imageLoader }
 {
 	//Initialization flag
 	//Initialize SDL
@@ -38,11 +39,21 @@ Window::~Window() {
 	SDL_Quit();
 }
 void Window::Render(Image* image) {
+
+	SDL_Rect targetRect{ 
+		image->x,
+		image->y,
+		image->w,
+		image->h 
+	};
 	//Apply the image
-	SDL_BlitSurface(image->GetResource(), nullptr, screenSurface, nullptr);
+	SDL_BlitScaled(image->GetResource(), nullptr, screenSurface, &targetRect);
 
 
 
 	//Update the surface
 	SDL_UpdateWindowSurface(window);
+}
+std::unique_ptr<Image> Window::LoadImage(const char* path) {
+	return imageLoader->LoadImage(path, screenSurface->format);
 }

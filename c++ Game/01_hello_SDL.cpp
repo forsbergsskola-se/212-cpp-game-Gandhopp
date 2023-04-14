@@ -9,10 +9,11 @@ and may not be redistributed without written permission.*/
 #include "Player.h"
 #include <map>
 #include <memory>
+#include "SDLImageLoader.h"
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 1920;
-const int SCREEN_HEIGHT = 1010;
+const int SCREEN_WIDTH = 600;
+const int SCREEN_HEIGHT = 400;
 
 enum class KeyPressSurfaces {
 	Default = 0,
@@ -41,11 +42,17 @@ std::map<SDL_KeyCode, const char*> inputMap = {
 };
 
 const char* fallbackSurface{ "Images/press.bmp" };
-auto image = std::make_unique<Image>(fallbackSurface);
 
 int main(int argc, char* args[])
 {
-	Window window{ SCREEN_WIDTH ,SCREEN_HEIGHT };
+	IImageLoader* imageLoader = new SDLImageLoader{};
+	Window window{ SCREEN_WIDTH ,SCREEN_HEIGHT, imageLoader};
+
+	Player player;
+	player.playerTexture = window.LoadImage(player.playerPath);
+
+	auto image = window.LoadImage(fallbackSurface);
+
 	//Start up SDL and create window
 	if (!window.WasSuccessfull())
 	{
@@ -65,6 +72,8 @@ int main(int argc, char* args[])
 	SDL_Event e; bool quit = false;
 	while (quit == false) {
 		while (SDL_PollEvent(&e)) {
+			player.handleEvent(e);
+
 			switch (e.type)
 			{
 			case SDL_QUIT: {
@@ -72,19 +81,25 @@ int main(int argc, char* args[])
 				
 			}break;
 			case SDL_KEYDOWN: {
+				const char* imgPath = fallbackSurface;
 				if (auto result = inputMap.find((SDL_KeyCode)e.key.keysym.sym); result != inputMap.end()) {
-					auto value = *result;
-					auto imageName = value.second;
-					image = std::make_unique<Image>(imageName);
+					auto imgPath = result->second;
+					printf("Input");
 				}
-				else {
-					image = std::make_unique<Image>(fallbackSurface);
-					
+				image = window.LoadImage(imgPath);
+				if (!image->WasSuccesfull()) {
+					printf("Failed to load media!\n");
+					return -1;
 				}
 			}break;
 			}
 		}
-		window.Render(image.get());
+		player.move(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		//window.Render(image.get());
+		window.Render(player.playerTexture.get());
+		
+		SDL_Delay(50);
 	}
 
 	return 0;

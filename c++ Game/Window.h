@@ -1,5 +1,8 @@
 #pragma once
 #include "Image.h"
+#include <memory>
+
+extern class IImageLoader;
 class Window
 {
 	
@@ -11,12 +14,15 @@ class Window
 	SDL_Surface* screenSurface{};
 
 	bool success;
+
+	IImageLoader* imageLoader;
 public:
-	Window(int width, int height);
+	Window(int width, int height, IImageLoader* imageLoader);
 	~Window();
 
 	
 	bool WasSuccessfull(){ return success; }
 	void Render(Image* image);
+	std::unique_ptr<Image> LoadImage(const char* path);
 };
 
