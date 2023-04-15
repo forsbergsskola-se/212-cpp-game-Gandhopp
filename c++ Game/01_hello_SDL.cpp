@@ -10,10 +10,12 @@ and may not be redistributed without written permission.*/
 #include <map>
 #include <memory>
 #include "SDLImageLoader.h"
+#include "SDL_ImageImageLoader.h"
+#include <vector>
+#include "GameObject.h"
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 600;
-const int SCREEN_HEIGHT = 400;
+
 
 enum class KeyPressSurfaces {
 	Default = 0,
@@ -43,15 +45,20 @@ std::map<SDL_KeyCode, const char*> inputMap = {
 
 const char* fallbackSurface{ "Images/press.bmp" };
 
+const unsigned int FPS = 60;
+const unsigned int MS_PER_FRAME = 1000 / FPS;
+
 int main(int argc, char* args[])
 {
-	IImageLoader* imageLoader = new SDLImageLoader{};
+	IImageLoader* imageLoader = new SDL_ImageImageLoader{};
 	Window window{ SCREEN_WIDTH ,SCREEN_HEIGHT, imageLoader};
 
 	Player player;
 	player.playerTexture = window.LoadImage(player.playerPath);
 
 	auto image = window.LoadImage(fallbackSurface);
+
+	std::vector<GameObject*> gameObjects{};
 
 	//Start up SDL and create window
 	if (!window.WasSuccessfull())
@@ -70,12 +77,17 @@ int main(int argc, char* args[])
 
 	//Hack to get window to stay up
 	SDL_Event e; bool quit = false;
+
+	unsigned int frameStartMs;
+
 	while (quit == false) {
+		frameStartMs = SDL_GetTicks();
 		while (SDL_PollEvent(&e)) {
+			
 			player.handleEvent(e);
 
 			switch (e.type)
-			{
+			{	
 			case SDL_QUIT: {
 				quit = true;
 				
@@ -96,10 +108,17 @@ int main(int argc, char* args[])
 		}
 		player.move(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+		window.clear();
 		//window.Render(image.get());
 		window.Render(player.playerTexture.get());
+
+		window.present();
 		
-		SDL_Delay(50);
+		unsigned int frameTimeMs = SDL_GetTicks() - frameStartMs;
+		if (frameTimeMs < MS_PER_FRAME) {
+			SDL_Delay(MS_PER_FRAME - frameTimeMs);
+		}
+
 	}
 
 	return 0;

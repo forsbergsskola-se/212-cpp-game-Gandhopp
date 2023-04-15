@@ -51,9 +51,17 @@ void Window::Render(Image* image) {
 
 
 
-	//Update the surface
-	SDL_UpdateWindowSurface(window);
 }
 std::unique_ptr<Image> Window::LoadImage(const char* path) {
 	return imageLoader->LoadImage(path, screenSurface->format);
+}
+
+
+void Window::clear() {
+	SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0, 0, 0));
+}
+
+void Window::present() {
+	//Update the surface
+	SDL_UpdateWindowSurface(window);
 }

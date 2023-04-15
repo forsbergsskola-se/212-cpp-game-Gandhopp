@@ -63,3 +63,7 @@ void Player::render()
 {
     //Show the dot
 }
+
+void Player::Update() {
+
+}

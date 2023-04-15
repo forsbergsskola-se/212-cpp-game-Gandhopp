@@ -2,17 +2,18 @@
 #include <SDL.h>
 #include "Image.h"
 #include <memory>
-class Player
+#include "GameObject.h"
+class Player : public GameObject
 {
 public:
-    const char* playerPath = "Images/dot.bmp";
+    const char* playerPath = "Images/armongus.png";
 
     //The dimensions of the dot
     static const int DOT_WIDTH = 20;
     static const int DOT_HEIGHT = 20;
 
     //Maximum axis velocity of the dot
-    static const int DOT_VEL = 10;
+    static const int DOT_VEL = 1;
 
     //Initializes the variables
     Player();
@@ -27,6 +28,7 @@ public:
     void render();
     std::unique_ptr<Image> playerTexture;
 
+    void Update() override;
 
 private:
 

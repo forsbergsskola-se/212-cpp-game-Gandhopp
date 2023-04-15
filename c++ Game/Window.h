@@ -2,6 +2,10 @@
 #include "Image.h"
 #include <memory>
 
+
+const int SCREEN_WIDTH = 600;
+const int SCREEN_HEIGHT = 400;
+
 extern class IImageLoader;
 class Window
 {
@@ -16,7 +20,14 @@ class Window
 	bool success;
 
 	IImageLoader* imageLoader;
+
+	SDL_Renderer* renderer{};
+
 public:
+
+	void clear();
+	void present();
+
 	Window(int width, int height, IImageLoader* imageLoader);
 	~Window();
 
