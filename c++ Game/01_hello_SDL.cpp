@@ -53,12 +53,12 @@ int main(int argc, char* args[])
 	IImageLoader* imageLoader = new SDL_ImageImageLoader{};
 	Window window{ SCREEN_WIDTH ,SCREEN_HEIGHT, imageLoader};
 
-	Player player;
-	player.playerTexture = window.LoadImage(player.playerPath);
-
 	auto image = window.LoadImage(fallbackSurface);
 
 	std::vector<GameObject*> gameObjects{};
+
+	gameObjects.push_back(new Player{"Images/armongus.png",&window});
+
 
 	//Start up SDL and create window
 	if (!window.WasSuccessfull())
@@ -76,16 +76,20 @@ int main(int argc, char* args[])
 
 
 	//Hack to get window to stay up
-	SDL_Event e; bool quit = false;
+	bool quit = false;
 
 	unsigned int frameStartMs;
+	SDL_Event e;
 
 	while (quit == false) {
 		frameStartMs = SDL_GetTicks();
+		
+		
 		while (SDL_PollEvent(&e)) {
 			
-			player.handleEvent(e);
-
+			for (auto gameObject : gameObjects) {
+				gameObject->Update();
+			}
 			switch (e.type)
 			{	
 			case SDL_QUIT: {
@@ -105,13 +109,20 @@ int main(int argc, char* args[])
 				}
 			}break;
 			}
+			for (auto gameobject : gameObjects) {
+				gameobject->HandleEvent(e);
+			}
 		}
-		player.move(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+		
+		for (auto gameobject : gameObjects) {
+			gameobject->Update();
+		}
 		window.clear();
 		//window.Render(image.get());
-		window.Render(player.playerTexture.get());
 
+		for (auto gameobject : gameObjects) {
+			gameobject->Render(&window);
+		}
 		window.present();
 		
 		unsigned int frameTimeMs = SDL_GetTicks() - frameStartMs;

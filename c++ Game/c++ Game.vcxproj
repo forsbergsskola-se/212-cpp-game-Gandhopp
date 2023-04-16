@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="01_hello_SDL.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IImageLoader.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="IImageLoader.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Player.h" />

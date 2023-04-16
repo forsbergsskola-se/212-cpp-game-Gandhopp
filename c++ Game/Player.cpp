@@ -1,11 +1,12 @@
 #include "Player.h"
 #include <SDL.h>
 #include "Window.h"
+#include "Image.h"
 
 //The dot that will move around on the screen
-Player::Player() : mPosX{ 0 }, mPosY{ 0 }, mVelX{ 0 }, mVelY{ 0 } {}
+Player::Player(const char* imagePath,Window* window) :  mPosX{ 0 }, mPosY{ 0 }, mVelX{ 0 }, mVelY{ 0 }, GameObject{ imagePath, window } {}
 
-void Player::handleEvent(SDL_Event& e)
+void Player::HandleEvent(SDL_Event& e)
 {
     //If a key was pressed
     if (e.type == SDL_KEYDOWN && e.key.repeat == 0)
@@ -54,16 +55,11 @@ void Player::move(int screenWidth, int screenHeight)
         //Move back
         mPosY -= mVelY;
     }
-    playerTexture->x = mPosX;
-    playerTexture->y = mPosY;
+    image->x = mPosX;
+    image->y = mPosY;
 
-}
-
-void Player::render()
-{
-    //Show the dot
 }
 
 void Player::Update() {
-
+    move(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
