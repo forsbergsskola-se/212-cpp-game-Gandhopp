@@ -6,11 +6,18 @@ Enemy::Enemy(const char* imagePath, Window* window, Player* player, int movement
 {
     collider.h = 20;
     collider.w = 20;
+
+    int randomX = 1+ (rand() % 500);
+    int randomY = 1+ (rand() % 400);
+    image->x = randomX;
+    image->y = randomY;
+    collider.x = randomX;
+    collider.y = randomY;
     maxVelocity = movementSpeed;
     printf("Enemy()");
 }
 
-void Enemy::Update()
+void Enemy::Update(uint32_t deltaTime)
 {
     move();
 }
@@ -36,6 +43,7 @@ void Enemy::move()
         image->y -= maxVelocity;
         collider.y -= maxVelocity;
     }
+    
 }
 Enemy::~Enemy()
 {

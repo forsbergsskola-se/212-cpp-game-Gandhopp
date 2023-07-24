@@ -5,6 +5,8 @@
 #include "GameObject.h"
 class Player : public GameObject
 {
+    uint32_t deltaTime;
+    uint32_t startDeltaTime = 0;
 public:
     
     const char* playerPath = "Images/armongus.png";
@@ -28,7 +30,7 @@ public:
     void shoot(std::vector<std::unique_ptr<GameObject>>*, Window* window,std::vector<GameObject*>* gameObjectsToDelete);
     
 
-    void Update() override;
+    void Update(uint32_t deltaTime) override;
 
     ~Player() override;
 };

@@ -16,6 +16,8 @@ protected:
 	//The dimensions of the dot
 	static const int width = 20;
 	static const int height = 20;
+
+	double deltaTime;
 	
 public:
 	SDL_Rect collider;
@@ -29,7 +31,7 @@ public:
 	static bool CheckCollision( SDL_Rect a, SDL_Rect b );
 	
 	GameObject(const char* imagePath, Window* window);
-	virtual void Update() = 0;
+	virtual void Update(uint32_t deltaTime) = 0;
 	virtual void HandleEvent(SDL_Event& e);
 	virtual void Render(Window* window);
 };

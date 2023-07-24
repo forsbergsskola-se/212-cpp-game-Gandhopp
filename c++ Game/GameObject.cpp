@@ -55,3 +55,4 @@ bool GameObject::CheckCollision( SDL_Rect a, SDL_Rect b )
     return true;
 }
 
+

@@ -9,7 +9,7 @@ class Enemy : public GameObject
 public:
     Enemy(const char* imagePath, Window* window, Player* player, int movementSpeed);
 
-    void Update() override;
+    void Update(uint32_t deltaTime) override;
     void move();
     ~Enemy() override;
     

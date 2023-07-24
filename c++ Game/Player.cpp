@@ -79,22 +79,19 @@ void Player::move(int screenWidth, int screenHeight)
 
 void Player::shoot(std::vector<std::unique_ptr<GameObject>>* gameObjects, Window* window, std::vector<GameObject*>* gameObjectsToDelete)
 {
-    std::vector<Enemy*> enemies;
-    for (const auto& obj : *this->gameObjects)
+    if(deltaTime - startDeltaTime >= 1)
     {
-        if(const auto& enemy = dynamic_cast<Enemy*>(obj.get()))
-        {
-            printf("there is an enemy");
-            enemies.push_back(enemy);
-        }
+        std::vector<Enemy*> enemies;
+        
+        gameObjects->push_back(std::make_unique<Shot>("Images/shot.png", window,xPosition,yPosition, 2,this->gameObjects,gameObjectsToDelete,deltaTime));
+        enemies.clear();
+        startDeltaTime = deltaTime;
     }
-    gameObjects->push_back(std::make_unique<Shot>("Images/shot.png", window,xPosition,yPosition, 2,std::move(enemies),gameObjectsToDelete));
-    enemies.clear();
 }
 
-void Player::Update() {
+void Player::Update(uint32_t deltaTime) {
     move(SCREEN_WIDTH, SCREEN_HEIGHT);
-    
+    this->deltaTime = deltaTime;
 }
 Player::~Player()
 {
