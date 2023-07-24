@@ -9,7 +9,8 @@ class Image
 
 	bool success;
 public:
-	int x, y, w, h;
+	float x, y;
+	int w, h;
 
 	Image(SDL_Surface* surface);
 

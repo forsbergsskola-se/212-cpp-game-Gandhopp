@@ -1,5 +1,7 @@
 #pragma once
 #include <SDL.h>
+#include <vector>
+
 #include "GameObject.h"
 class Player : public GameObject
 {
@@ -7,34 +9,27 @@ public:
     
     const char* playerPath = "Images/armongus.png";
 
-    //The dimensions of the dot
-    static const int DOT_WIDTH = 20;
-    static const int DOT_HEIGHT = 20;
+    Window* shootWindow;
 
+    std::vector<std::unique_ptr<GameObject>>* gameObjectsToCreate;
+    std::vector<GameObject*>* gameObjectsToDelete;
+    std::vector<std::unique_ptr<GameObject>>* gameObjects;
     //Maximum axis velocity of the dot
-    static const int DOT_VEL = 1;
 
     //Initializes the variables
-    Player(const char* imagePath, Window* window);
+    Player(const char* imagePath, Window* window, int movementSpeed,std::vector<std::unique_ptr<GameObject>>* gameObjectsToCreate, std::vector<std::unique_ptr<GameObject>>* gameObjects, std::vector<GameObject*>* gameObjectsToDelete);
 
     //Takes key presses and adjusts the dot's velocity
     void HandleEvent(SDL_Event& e) override;
 
     //Moves the dot
     void move(int width, int height);
-
-    //Shows the dot on the screen
+    
+    void shoot(std::vector<std::unique_ptr<GameObject>>*, Window* window,std::vector<GameObject*>* gameObjectsToDelete);
     
 
     void Update() override;
 
-private:
-
-    //The X and Y offsets of the dot
-    int mPosX, mPosY;
-
-    //The velocity of the dot
-    int mVelX, mVelY;
-
+    ~Player() override;
 };
 

@@ -161,21 +161,27 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="01_hello_SDL.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IImageLoader.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SDLImageLoader.cpp" />
     <ClCompile Include="SDL_ImageImageLoader.cpp" />
+    <ClCompile Include="Shot.cpp" />
+    <ClCompile Include="Vector.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IImageLoader.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="SDLImageLoader.h" />
     <ClInclude Include="SDL_ImageImageLoader.h" />
+    <ClInclude Include="Shot.h" />
+    <ClInclude Include="Vector.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

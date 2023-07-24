@@ -1,10 +1,18 @@
 #include "Player.h"
 #include <SDL.h>
+
+#include <utility>
+
+#include "Enemy.h"
 #include "Window.h"
 #include "Image.h"
+#include "Shot.h"
 
 //The dot that will move around on the screen
-Player::Player(const char* imagePath,Window* window) :  mPosX{ 0 }, mPosY{ 0 }, mVelX{ 0 }, mVelY{ 0 }, GameObject{ imagePath, window } {}
+Player::Player(const char* imagePath,Window* window, int movementSpeed, std::vector<std::unique_ptr<GameObject>>* gameObjectsToCreate, std::vector<std::unique_ptr<GameObject>>* gameObjects, std::vector<GameObject*>* gameObjectsToDelete) :   GameObject{ imagePath, window }, shootWindow{window}, gameObjectsToCreate{gameObjectsToCreate},gameObjectsToDelete{gameObjectsToDelete},gameObjects{gameObjects}
+{
+    maxVelocity = movementSpeed;printf("Player()");
+}
 
 void Player::HandleEvent(SDL_Event& e)
 {
@@ -14,10 +22,10 @@ void Player::HandleEvent(SDL_Event& e)
         //Adjust the velocity
         switch (e.key.keysym.sym)
         {
-        case SDLK_w: mVelY -= DOT_VEL; break;
-        case SDLK_s: mVelY += DOT_VEL; break;
-        case SDLK_a: mVelX -= DOT_VEL; break;
-        case SDLK_d: mVelX += DOT_VEL; break;
+        case SDLK_w: yVelocity -= maxVelocity; break;
+        case SDLK_s: yVelocity += maxVelocity; break;
+        case SDLK_a: xVelocity -= maxVelocity; break;
+        case SDLK_d: xVelocity += maxVelocity; break;
         }
         
     }
@@ -27,39 +35,68 @@ void Player::HandleEvent(SDL_Event& e)
         //Adjust the velocity
         switch (e.key.keysym.sym)
         {
-        case SDLK_w: mVelY += DOT_VEL; break;
-        case SDLK_s: mVelY -= DOT_VEL; break;
-        case SDLK_a: mVelX += DOT_VEL; break;
-        case SDLK_d: mVelX -= DOT_VEL; break;
+        case SDLK_w: yVelocity += maxVelocity; break;
+        case SDLK_s: yVelocity -= maxVelocity; break;
+        case SDLK_a: xVelocity += maxVelocity; break;
+        case SDLK_d: xVelocity -= maxVelocity; break;
         }
     }
+
+    if(e.type == SDL_MOUSEBUTTONDOWN)
+    {
+        shoot(gameObjectsToCreate,shootWindow,gameObjectsToDelete);
+        printf("shooting");
+    }
+    
 }
 
 void Player::move(int screenWidth, int screenHeight)
 {
     //Move the dot left or right
-    mPosX += mVelX;
+    xPosition += xVelocity;
 
     //If the dot went too far to the left or right
-    if ((mPosX < 0) || (mPosX + DOT_WIDTH > screenWidth))
+    if ((xPosition < 0) || (xPosition + width > screenWidth))
     {
         //Move back
-        mPosX -= mVelX;
+        xPosition -= xVelocity;
     }
     //Move the dot up or down
-    mPosY += mVelY;
+    yPosition += yVelocity;
 
     //If the dot went too far up or down
-    if ((mPosY < 0) || (mPosY + DOT_HEIGHT > screenHeight))
+    if ((yPosition < 0) || (yPosition + height > screenHeight))
     {
         //Move back
-        mPosY -= mVelY;
+        yPosition -= yVelocity;
     }
-    image->x = mPosX;
-    image->y = mPosY;
+    image->x = xPosition;
+    image->y = yPosition;
+    collider.y = yPosition;
+    collider.x = xPosition;
+    
+}
 
+void Player::shoot(std::vector<std::unique_ptr<GameObject>>* gameObjects, Window* window, std::vector<GameObject*>* gameObjectsToDelete)
+{
+    std::vector<Enemy*> enemies;
+    for (const auto& obj : *this->gameObjects)
+    {
+        if(const auto& enemy = dynamic_cast<Enemy*>(obj.get()))
+        {
+            printf("there is an enemy");
+            enemies.push_back(enemy);
+        }
+    }
+    gameObjects->push_back(std::make_unique<Shot>("Images/shot.png", window,xPosition,yPosition, 2,std::move(enemies),gameObjectsToDelete));
+    enemies.clear();
 }
 
 void Player::Update() {
     move(SCREEN_WIDTH, SCREEN_HEIGHT);
+    
+}
+Player::~Player()
+{
+    printf("~Player()");
 }
