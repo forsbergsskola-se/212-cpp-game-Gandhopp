@@ -28,7 +28,7 @@ struct Clock
 
     void tick()
     {
-        uint32_t tick_time = SDL_GetTicks();
+        const uint32_t tick_time = SDL_GetTicks();
         delta = tick_time - last_tick_time;
         last_tick_time = tick_time;
     }
@@ -132,9 +132,10 @@ int main(int argc, char* args[])
         }
         if(clock.delta * 0.001 - startDeltaTime >= 1)
         {
-            gameObjectsToCreate.push_back(std::make_unique<Enemy>("Images/armongus.png", &window, playerRef, 1));
+            gameObjectsToCreate.push_back(std::make_unique<Enemy>("Images/armongus.png", &window, playerRef, 1, &gameObjectsToDelete));
             startDeltaTime = clock.delta * 0.001;
         }
+        printf("\n pointer:%p", playerRef);
     }
 
     return 0;
