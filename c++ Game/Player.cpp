@@ -11,7 +11,9 @@
 //The dot that will move around on the screen
 Player::Player(const char* imagePath,Window* window, int movementSpeed, std::vector<std::unique_ptr<GameObject>>* gameObjectsToCreate, std::vector<std::unique_ptr<GameObject>>* gameObjects, std::vector<GameObject*>* gameObjectsToDelete) :   GameObject{ imagePath, window }, shootWindow{window}, gameObjectsToCreate{gameObjectsToCreate},gameObjectsToDelete{gameObjectsToDelete},gameObjects{gameObjects}
 {
-    maxVelocity = movementSpeed;printf("Player()");
+    maxVelocity = movementSpeed;
+    collider.h = 20;
+    collider.w = 20;
 }
 
 void Player::HandleEvent(SDL_Event& e)
@@ -83,7 +85,7 @@ void Player::shoot(std::vector<std::unique_ptr<GameObject>>* gameObjects, Window
     {
         std::vector<Enemy*> enemies;
         
-        gameObjects->push_back(std::make_unique<Shot>("Images/shot.png", window,xPosition,yPosition, 2,this->gameObjects,gameObjectsToDelete,deltaTime));
+        gameObjects->push_back(std::make_unique<Shot>("Images/shot.png", window,xPosition,yPosition, 4,this->gameObjects,gameObjectsToDelete,deltaTime));
         enemies.clear();
         startDeltaTime = deltaTime;
     }

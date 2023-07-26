@@ -3,6 +3,7 @@
 #include "Vector.h"
 #include "Window.h"
 
+
 void Shot::Update(uint32_t deltaTime)
 {
     const int playerX = xPosition - SCREEN_WIDTH / 2;

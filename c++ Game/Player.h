@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "GameObject.h"
+
 class Player : public GameObject
 {
     uint32_t deltaTime;

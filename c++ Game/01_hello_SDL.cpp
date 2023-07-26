@@ -21,6 +21,7 @@ and may not be redistributed without written permission.*/
 constexpr unsigned int FPS = 60;
 constexpr unsigned int MS_PER_FRAME = 1000 / FPS;
 
+
 struct Clock
 {
     uint32_t last_tick_time = 0;
@@ -42,11 +43,13 @@ int main(int argc, char* args[])
     std::vector<std::unique_ptr<GameObject>> gameObjects{};
     std::vector<std::unique_ptr<GameObject>> gameObjectsToCreate{};
     std::vector<GameObject*> gameObjectsToDelete{};
-    auto player = std::make_unique<Player>("Images/armongus.png", &window, 2, &gameObjectsToCreate, &gameObjects,
+    auto player = std::make_unique<Player>("Images/amongus.png", &window, 2, &gameObjectsToCreate, &gameObjects,
                                            &gameObjectsToDelete);
     Player* playerRef = player.get();
+    std::weak_ptr<Player> playerWeakPtr;
     gameObjects.push_back(std::move(player));
 
+    
 
     //Start up SDL and create window
     if (!window.WasSuccessfull())
@@ -132,10 +135,9 @@ int main(int argc, char* args[])
         }
         if(clock.delta * 0.001 - startDeltaTime >= 1)
         {
-            gameObjectsToCreate.push_back(std::make_unique<Enemy>("Images/armongus.png", &window, playerRef, 1, &gameObjectsToDelete));
+            gameObjectsToCreate.push_back(std::make_unique<Enemy>("Images/imposter.png", &window, playerRef, 1, &gameObjectsToDelete));
             startDeltaTime = clock.delta * 0.001;
         }
-        printf("\n pointer:%p", playerRef);
     }
 
     return 0;
