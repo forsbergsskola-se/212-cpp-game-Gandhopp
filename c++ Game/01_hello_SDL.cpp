@@ -40,16 +40,15 @@ int main(int argc, char* args[])
     IImageLoader* imageLoader = new SDL_ImageImageLoader{};
     Window window{SCREEN_WIDTH, SCREEN_HEIGHT, imageLoader};
 
-    std::vector<std::unique_ptr<GameObject>> gameObjects{};
-    std::vector<std::unique_ptr<GameObject>> gameObjectsToCreate{};
+    std::vector<std::shared_ptr<GameObject>> gameObjects{};
+    std::vector<std::shared_ptr<GameObject>> gameObjectsToCreate{};
     std::vector<GameObject*> gameObjectsToDelete{};
-    auto player = std::make_unique<Player>("Images/amongus.png", &window, 2, &gameObjectsToCreate, &gameObjects,
+    auto player = std::make_shared<Player>("Images/amongus.png", &window, 2, &gameObjectsToCreate, &gameObjects,
                                            &gameObjectsToDelete);
-    Player* playerRef = player.get();
-    std::weak_ptr<Player> playerWeakPtr;
+    auto playerPtr = player.get();
+    std::weak_ptr<Player> playerWeakPtr = player;
     gameObjects.push_back(std::move(player));
 
-    
 
     //Start up SDL and create window
     if (!window.WasSuccessfull())
@@ -61,6 +60,8 @@ int main(int argc, char* args[])
 
     //Hack to get window to stay up
     bool quit = false;
+
+    bool playerIsDead = false;
 
     SDL_Event e;
 
@@ -87,6 +88,24 @@ int main(int argc, char* args[])
             {
                 gameObject->HandleEvent(e);
             }
+            if (playerIsDead && e.type == SDL_KEYDOWN)
+            {
+                if (e.key.keysym.sym == SDLK_f)
+                {
+                    for (const auto& gameObject : gameObjects)
+                    {
+                        gameObjectsToDelete.push_back(gameObject.get());
+                    }
+                    
+                    auto playerRespawn = std::make_shared<Player>("Images/amongus.png", &window, 2, &gameObjectsToCreate,
+                                                           &gameObjects,
+                                                           &gameObjectsToDelete);
+                    playerPtr = playerRespawn.get();
+                    playerWeakPtr = playerRespawn;
+                    gameObjects.push_back(std::move(playerRespawn));
+                    playerIsDead = false;
+                }
+            }
         }
 
         for (auto& gameObject : gameObjectsToCreate)
@@ -100,7 +119,7 @@ int main(int argc, char* args[])
                 std::remove_if(
                     gameObjects.begin(),
                     gameObjects.end(),
-                    [&](std::unique_ptr<GameObject> const& p)
+                    [&](std::shared_ptr<GameObject> const& p)
                     {
                         return std::find(
                             gameObjectsToDelete.cbegin(),
@@ -133,10 +152,17 @@ int main(int argc, char* args[])
         {
             SDL_Delay(MS_PER_FRAME - frameTimeMs);
         }
-        if(clock.delta * 0.001 - startDeltaTime >= 1)
+        if (clock.delta * 0.001 - startDeltaTime >= 1 && !playerIsDead)
         {
-            gameObjectsToCreate.push_back(std::make_unique<Enemy>("Images/imposter.png", &window, playerRef, 1, &gameObjectsToDelete));
+            gameObjectsToCreate.push_back(
+                std::make_shared<Enemy>("Images/imposter.png", &window, playerPtr, 1, &gameObjectsToDelete));
             startDeltaTime = clock.delta * 0.001;
+        }
+        if (playerWeakPtr.expired())
+        {
+            //player died
+            playerIsDead = true;
+            
         }
     }
 

@@ -1,5 +1,8 @@
 #include "Shot.h"
 
+#include <memory>
+#include <memory>
+
 #include "Vector.h"
 #include "Window.h"
 
@@ -16,7 +19,7 @@ void Shot::Update(uint32_t deltaTime)
     collider.y = image->y;
     for (const auto& obj : *this->gameObjects)
     {
-        if(const auto& enemy = dynamic_cast<Enemy*>(obj.get()))
+        if(const auto& enemy = std::dynamic_pointer_cast<Enemy>(obj))
         {
             enemies.push_back(enemy);
         }
@@ -28,7 +31,7 @@ void Shot::Update(uint32_t deltaTime)
         // printf("enemy y:   %d \n",enemy->collider.y);
         if(CheckCollision(this->collider, enemy->collider))
         {
-            gameObjectsToDelete->push_back(enemy);
+            gameObjectsToDelete->push_back(enemy.get());
             printf("Colliding!");
         }
     }
@@ -38,7 +41,7 @@ void Shot::Update(uint32_t deltaTime)
     }
     
 }
-Shot::Shot(const char* imagePath, Window* window, int playerXPos, int playerYPos, int bulletSpeed, std::vector<std::unique_ptr<GameObject>>* gameObjects,std::vector<GameObject*>* gameObjectsToDelete, uint32_t startTime):
+Shot::Shot(const char* imagePath, Window* window, int playerXPos, int playerYPos, int bulletSpeed, std::vector<std::shared_ptr<GameObject>>* gameObjects,std::vector<GameObject*>* gameObjectsToDelete, uint32_t startTime):
     GameObject{imagePath, window}, startTime{startTime}, gameObjects{gameObjects},
     bulletSpeed{bulletSpeed}, gameObjectsToDelete{gameObjectsToDelete}
 {

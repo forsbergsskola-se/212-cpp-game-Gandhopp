@@ -10,13 +10,13 @@ class Shot : public GameObject
     float yMouse = 0;
     
     uint32_t startTime;
-    std::vector<std::unique_ptr<GameObject>>* gameObjects;
+    std::vector<std::shared_ptr<GameObject>>* gameObjects;
 public:
     int bulletSpeed;
     int fireRate{};
-    std::vector<Enemy*> enemies;
+    std::vector<std::shared_ptr<GameObject>> enemies;
     std::vector<GameObject*>* gameObjectsToDelete;
     void Update(uint32_t deltaTime) override;
-    Shot(const char* imagePath, Window* window, int xPos, int yPos, int bulletSpeed,std::vector<std::unique_ptr<GameObject>>* gameObjects,std::vector<GameObject*>* gameObjectsToDelete,uint32_t startTime);
+    Shot(const char* imagePath, Window* window, int xPos, int yPos, int bulletSpeed,std::vector<std::shared_ptr<GameObject>>* gameObjects,std::vector<GameObject*>* gameObjectsToDelete,uint32_t startTime);
     ~Shot() override;
 };

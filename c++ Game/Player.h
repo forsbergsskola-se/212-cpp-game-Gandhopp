@@ -14,13 +14,13 @@ public:
 
     Window* shootWindow;
 
-    std::vector<std::unique_ptr<GameObject>>* gameObjectsToCreate;
+    std::vector<std::shared_ptr<GameObject>>* gameObjectsToCreate;
     std::vector<GameObject*>* gameObjectsToDelete;
-    std::vector<std::unique_ptr<GameObject>>* gameObjects;
+    std::vector<std::shared_ptr<GameObject>>* gameObjects;
     //Maximum axis velocity of the dot
 
     //Initializes the variables
-    Player(const char* imagePath, Window* window, int movementSpeed,std::vector<std::unique_ptr<GameObject>>* gameObjectsToCreate, std::vector<std::unique_ptr<GameObject>>* gameObjects, std::vector<GameObject*>* gameObjectsToDelete);
+    Player(const char* imagePath, Window* window, int movementSpeed,std::vector<std::shared_ptr<GameObject>>* gameObjectsToCreate, std::vector<std::shared_ptr<GameObject>>* gameObjects, std::vector<GameObject*>* gameObjectsToDelete);
 
     //Takes key presses and adjusts the dot's velocity
     void HandleEvent(SDL_Event& e) override;
@@ -28,7 +28,7 @@ public:
     //Moves the dot
     void move(int width, int height);
     
-    void shoot(std::vector<std::unique_ptr<GameObject>>*, Window* window,std::vector<GameObject*>* gameObjectsToDelete);
+    void shoot(std::vector<std::shared_ptr<GameObject>>*, Window* window,std::vector<GameObject*>* gameObjectsToDelete);
     
 
     void Update(uint32_t deltaTime) override;
