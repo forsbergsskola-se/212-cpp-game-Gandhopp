@@ -1,13 +1,12 @@
 #include "Player.h"
 #include <SDL.h>
 
-#include <utility>
-
 #include "Enemy.h"
 #include "Window.h"
 #include "Image.h"
 #include "Shot.h"
 
+int score;
 //The dot that will move around on the screen
 Player::Player(const char* imagePath,Window* window, int movementSpeed, std::vector<std::shared_ptr<GameObject>>* gameObjectsToCreate, std::vector<std::shared_ptr<GameObject>>* gameObjects, std::vector<GameObject*>* gameObjectsToDelete) :   GameObject{ imagePath, window }, shootWindow{window}, gameObjectsToCreate{gameObjectsToCreate},gameObjectsToDelete{gameObjectsToDelete},gameObjects{gameObjects}
 {

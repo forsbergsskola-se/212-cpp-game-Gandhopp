@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 
+extern int score;
 class Player : public GameObject
 {
     uint32_t deltaTime;

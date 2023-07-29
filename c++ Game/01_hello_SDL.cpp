@@ -57,7 +57,6 @@ int main(int argc, char* args[])
     std::weak_ptr<Player> playerWeakPtr = player;
     gameObjects.push_back(std::move(player));
 
-
     //Start up SDL and create window
     if (!window.WasSuccessfull())
     {
@@ -88,15 +87,7 @@ int main(int argc, char* args[])
         Clock clock;
         clock.tick();
 
-        Font font{"Fonts/standard_font.ttf", 28};
-        auto text = font.createText("text and stuff", window.renderer);
-            
-        gTextTexture.gFont = TTF_OpenFont("Fonts/standard_font.ttf",28);
-        if(gTextTexture.gFont == NULL)
-        {
-            printf("failed loading font");
-        }
-        gTextTexture.loadFromRenderedText("hello", SDL_Color{50, 0, 0, 1});
+        
 
         
         while (SDL_PollEvent(&e))
@@ -132,6 +123,7 @@ int main(int argc, char* args[])
                     playerWeakPtr = playerRespawn;
                     gameObjects.push_back(std::move(playerRespawn));
                     playerIsDead = false;
+                    score = 0;
                 }
             }
         }
@@ -173,7 +165,7 @@ int main(int argc, char* args[])
         {
             gameObject->Render(&window);
         }
-        window.present();
+
 
         const unsigned int frameTimeMs = SDL_GetTicks() - frameStartMs;
         if (frameTimeMs < MS_PER_FRAME)
@@ -190,8 +182,27 @@ int main(int argc, char* args[])
         {
             //player died
             playerIsDead = true;
+            Font font{"Fonts/standard_font.ttf", 28};
+            auto text = font.createText("text and stuff", window.renderer);
+            
+            gTextTexture.gFont = TTF_OpenFont("Fonts/standard_font.ttf",28);
+            gTextTexture.loadFromRenderedText("Press F to restart", SDL_Color{255, 0, 0});
+            gTextTexture.rect.x = (SCREEN_WIDTH - gTextTexture.rect.w )/ 2;
+            gTextTexture.rect.y = (SCREEN_HEIGHT - gTextTexture.rect.h) /2;
+            window.Render(gTextTexture);
+
         }
-        window.Render(text.get());
+        Font font{"Fonts/standard_font.ttf", 28};
+        auto text = font.createText("text and stuff", window.renderer);
+            
+        gTextTexture.gFont = TTF_OpenFont("Fonts/score_font.ttf",28);
+        std::string scoreString = "Score " + std::to_string(score);
+        gTextTexture.loadFromRenderedText(scoreString, SDL_Color{255, 0, 0});
+        gTextTexture.rect.x = SCREEN_WIDTH - gTextTexture.rect.w;
+        gTextTexture.rect.y = 0;
+        window.Render(gTextTexture);
+        window.present();
+
     }
 
     return 0;

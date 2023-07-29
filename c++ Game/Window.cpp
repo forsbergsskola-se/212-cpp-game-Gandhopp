@@ -2,7 +2,7 @@
 #include <cstdio>
 #include <SDL.h>
 #include "IImageLoader.h"
-
+#include "TextRender.h"
 Window::Window(int width, int height, IImageLoader* imageLoader) : success{}, imageLoader{ imageLoader }
 {
 	//Initialization flag
@@ -51,6 +51,14 @@ void Window::Render(Image* image) {
 
 
 
+}
+
+void Window::Render(TextRenderer& image)
+{
+	//Apply the image
+	SDL_BlitScaled(image.getResource(), nullptr, screenSurface, &image.rect);
+	//Update the surface
+	SDL_UpdateWindowSurface(window);
 }
 std::unique_ptr<Image> Window::LoadImage(const char* path) {
 	return imageLoader->LoadImage(path, screenSurface->format);

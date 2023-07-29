@@ -1,7 +1,7 @@
 #pragma once
 #include "Image.h"
 #include <memory>
-
+#include "TextRender.h"
 
 const int SCREEN_WIDTH = 600;
 const int SCREEN_HEIGHT = 400;
@@ -33,6 +33,7 @@ public:
 	
 	bool WasSuccessfull(){ return success; }
 	void Render(Image* image);
+	void Render(TextRenderer& image);
 	std::unique_ptr<Image> LoadImage(const char* path);
 };
 

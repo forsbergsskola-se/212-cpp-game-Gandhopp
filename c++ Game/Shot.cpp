@@ -21,17 +21,26 @@ void Shot::Update(uint32_t deltaTime)
     {
         if(const auto& enemy = std::dynamic_pointer_cast<Enemy>(obj))
         {
-            enemies.push_back(enemy);
+            if (std::find(enemies.begin(), enemies.end(), enemy) == enemies.end())
+            {
+                enemies.push_back(enemy);
+            }
         }
     }
     
-    for (auto enemy : enemies)
+    for (auto it = enemies.begin(); it != enemies.end(); )
     {
-        // printf("enemy x:   %d \n",enemy->collider.x);
-        // printf("enemy y:   %d \n",enemy->collider.y);
-        if(CheckCollision(this->collider, enemy->collider))
+        auto enemy = *it;
+
+        if (CheckCollision(this->collider, enemy->collider))
         {
             gameObjectsToDelete->push_back(enemy.get());
+            score++;
+            it = enemies.erase(it); 
+        }
+        else
+        {
+            ++it; 
         }
     }
     if(deltaTime - startTime >= 10)
