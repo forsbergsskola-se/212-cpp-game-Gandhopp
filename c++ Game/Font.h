@@ -11,7 +11,6 @@ class Font
     TTF_Font* font{};
     bool success;
 public:
-public:
     Font(const char* path, const int size);
     ~Font();
     SDL_Rect rect { 0, 0, 640, 480 };

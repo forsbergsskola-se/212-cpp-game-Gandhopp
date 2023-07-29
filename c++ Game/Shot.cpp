@@ -32,7 +32,6 @@ void Shot::Update(uint32_t deltaTime)
         if(CheckCollision(this->collider, enemy->collider))
         {
             gameObjectsToDelete->push_back(enemy.get());
-            printf("Colliding!");
         }
     }
     if(deltaTime - startTime >= 10)
@@ -68,5 +67,4 @@ Shot::Shot(const char* imagePath, Window* window, int playerXPos, int playerYPos
 
 Shot::~Shot()
 {
-    printf("~Shot()");
 }

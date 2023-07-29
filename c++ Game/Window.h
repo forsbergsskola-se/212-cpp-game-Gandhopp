@@ -21,10 +21,9 @@ class Window
 
 	IImageLoader* imageLoader;
 
-	SDL_Renderer* renderer{};
 
 public:
-
+	SDL_Renderer* renderer{};
 	void clear();
 	void present();
 

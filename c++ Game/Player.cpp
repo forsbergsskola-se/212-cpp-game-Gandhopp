@@ -47,7 +47,6 @@ void Player::HandleEvent(SDL_Event& e)
     if(e.type == SDL_MOUSEBUTTONDOWN)
     {
         shoot(gameObjectsToCreate,shootWindow,gameObjectsToDelete);
-        printf("shooting");
     }
     
 }

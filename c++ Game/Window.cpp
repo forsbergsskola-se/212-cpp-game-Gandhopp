@@ -41,8 +41,8 @@ Window::~Window() {
 void Window::Render(Image* image) {
 
 	SDL_Rect targetRect{ 
-		image->x,
-		image->y,
+		static_cast<int>(image->x),
+		static_cast<int>(image->y),
 		image->w,
 		image->h 
 	};

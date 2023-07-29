@@ -1,1 +1,5 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-8d59dc4de5201274e310e4c54b9627a8934c3b88527886e3b421487c677d23eb.svg)](https://classroom.github.com/a/xhZBU6iz)
+This game was made in c++ using SDL for an assignment. The goal of the assignment was to teach us about basic c++ game making, using extended programming libraries such as SDL
+and implementing design patterns. My game is a top down shooter where you have to kill as many enemies as possible to achieve a higher score. If an enemy touches you, you die and have to restart.
+Some design patterns I used to achieve this was Subclass Sandbox and Type object pattern to make Gameobjects that have basic functions like handleEvent, update and render.
+I then used this class to create all of my objects in my game like the player, enemies and bullets. Another pattern I used was the gameloop pattern.
+In my main function I keep track of wether the player is alive or not and if so enemies spawn and if not all enemies get deleted and the player can restart the level.

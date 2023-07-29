@@ -14,7 +14,9 @@ and may not be redistributed without written permission.*/
 #include <string>
 
 #include "Enemy.h"
+#include "Font.h"
 #include "GameObject.h"
+#include "TextRender.h"
 
 //Screen dimension constants
 
@@ -40,6 +42,12 @@ int main(int argc, char* args[])
     IImageLoader* imageLoader = new SDL_ImageImageLoader{};
     Window window{SCREEN_WIDTH, SCREEN_HEIGHT, imageLoader};
 
+    SDL_Renderer* gRenderer = nullptr;
+
+    TTF_Font* gFont = nullptr;
+
+    TextRenderer gTextTexture;
+
     std::vector<std::shared_ptr<GameObject>> gameObjects{};
     std::vector<std::shared_ptr<GameObject>> gameObjectsToCreate{};
     std::vector<GameObject*> gameObjectsToDelete{};
@@ -52,6 +60,12 @@ int main(int argc, char* args[])
 
     //Start up SDL and create window
     if (!window.WasSuccessfull())
+    {
+        printf("Failed to initialize!\n");
+        return -1;
+    }
+
+    if(TTF_Init() == -1)
     {
         printf("Failed to initialize!\n");
         return -1;
@@ -73,6 +87,18 @@ int main(int argc, char* args[])
 
         Clock clock;
         clock.tick();
+
+        Font font{"Fonts/standard_font.ttf", 28};
+        auto text = font.createText("text and stuff", window.renderer);
+            
+        gTextTexture.gFont = TTF_OpenFont("Fonts/standard_font.ttf",28);
+        if(gTextTexture.gFont == NULL)
+        {
+            printf("failed loading font");
+        }
+        gTextTexture.loadFromRenderedText("hello", SDL_Color{50, 0, 0, 1});
+
+        
         while (SDL_PollEvent(&e))
         {
             switch (e.type)
@@ -84,6 +110,7 @@ int main(int argc, char* args[])
                 break;
             default: ;
             }
+            
             for (const auto& gameObject : gameObjects)
             {
                 gameObject->HandleEvent(e);
@@ -96,10 +123,11 @@ int main(int argc, char* args[])
                     {
                         gameObjectsToDelete.push_back(gameObject.get());
                     }
-                    
-                    auto playerRespawn = std::make_shared<Player>("Images/amongus.png", &window, 2, &gameObjectsToCreate,
-                                                           &gameObjects,
-                                                           &gameObjectsToDelete);
+
+                    auto playerRespawn = std::make_shared<Player>("Images/amongus.png", &window, 2,
+                                                                  &gameObjectsToCreate,
+                                                                  &gameObjects,
+                                                                  &gameObjectsToDelete);
                     playerPtr = playerRespawn.get();
                     playerWeakPtr = playerRespawn;
                     gameObjects.push_back(std::move(playerRespawn));
@@ -162,8 +190,8 @@ int main(int argc, char* args[])
         {
             //player died
             playerIsDead = true;
-            
         }
+        window.Render(text.get());
     }
 
     return 0;
