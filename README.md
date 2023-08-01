@@ -15,5 +15,4 @@ In my main function I keep track of wether the player is alive or not and if so 
 
 https://github.com/forsbergsskola-se/212-cpp-game-Gandhopp/assets/112471046/3ab286a5-7e29-4fc2-a3b0-ce126a054c2d
 
-Build:
-[Release.zip](https://github.com/forsbergsskola-se/212-cpp-game-Gandhopp/files/12227124/Release.zip)
+[Build](https://github.com/forsbergsskola-se/212-cpp-game-Gandhopp/files/12227124/Release.zip)
