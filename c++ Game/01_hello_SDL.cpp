@@ -45,7 +45,7 @@ int main(int argc, char* args[])
     SDL_Renderer* gRenderer = nullptr;
 
     TTF_Font* gFont = nullptr;
-
+    
     TextRenderer gTextTexture;
 
     std::vector<std::shared_ptr<GameObject>> gameObjects{};
@@ -70,7 +70,6 @@ int main(int argc, char* args[])
         return -1;
     }
 
-
     //Hack to get window to stay up
     bool quit = false;
 
@@ -86,9 +85,6 @@ int main(int argc, char* args[])
 
         Clock clock;
         clock.tick();
-
-        
-
         
         while (SDL_PollEvent(&e))
         {
@@ -202,8 +198,6 @@ int main(int argc, char* args[])
         gTextTexture.rect.y = 0;
         window.Render(gTextTexture);
         window.present();
-
     }
-
     return 0;
 }
