@@ -18,5 +18,3 @@ The other Feature I use is collections. I use many different collections in my g
 ![image](https://github.com/forsbergsskola-se/212-cpp-game-Gandhopp/assets/112471046/69ef2493-44d1-4ca8-81ed-761eb66934c9)
 
 https://github.com/forsbergsskola-se/212-cpp-game-Gandhopp/assets/112471046/3ab286a5-7e29-4fc2-a3b0-ce126a054c2d
-
-[Build](https://github.com/forsbergsskola-se/212-cpp-game-Gandhopp/files/12227124/Release.zip)
