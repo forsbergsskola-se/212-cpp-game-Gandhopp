@@ -43,8 +43,6 @@ int main(int argc, char* args[])
     Window window{SCREEN_WIDTH, SCREEN_HEIGHT, imageLoader};
 
     SDL_Renderer* gRenderer = nullptr;
-
-    TTF_Font* gFont = nullptr;
     
     TextRenderer gTextTexture;
 
@@ -188,9 +186,6 @@ int main(int argc, char* args[])
             window.Render(gTextTexture);
 
         }
-        Font font{"Fonts/standard_font.ttf", 28};
-        auto text = font.createText("text and stuff", window.renderer);
-            
         gTextTexture.gFont = TTF_OpenFont("Fonts/score_font.ttf",28);
         std::string scoreString = "Score " + std::to_string(score);
         gTextTexture.loadFromRenderedText(scoreString, SDL_Color{255, 0, 0});
